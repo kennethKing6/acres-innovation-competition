@@ -1,13 +1,17 @@
 const TaskTrackerDatabase = require('../database/TaskTrackerDatabase')
 
 module.exports = class TaskTracker{
-    static createTask(email,title,descripton,managerEmail){
-        const id = Date.now() + Math.random() + 1 + Date.now()
+    static createTask(email,title,descripton,managerEmail,task){
+        const timestamp = Date.now()
+        const id = timestamp + Math.random() + 1 + timestamp
         TaskTrackerDatabase[id] = {
             email,
             title,
             descripton,
-            managerEmail
+            managerEmail,
+            task,
+            createdAt:timestamp,
+            completed:null
         }
     }
     static getTaskByUser(email){
