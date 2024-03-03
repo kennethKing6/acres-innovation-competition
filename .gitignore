@@ -1,4 +1,5 @@
 server/node_modules
+server/coverage
 acresweb/node_modules
 acresweb/package-lock.json
 server/package-lock.json

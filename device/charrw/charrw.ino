@@ -95,10 +95,10 @@ void loop() {
     byte sector         = 1;
     byte blockAddr      = 4;
     byte dataBlock[]    = {
-        0x02, 0x10, 0x20, 0x04, //  1,  2,   3,  4,
-        0x05, 0x06, 0x07, 0x08, //  5,  6,   7,  8,
-        0x09, 0x0a, 0xff, 0x0b, //  9, 10, 255, 11,
-        0x0c, 0x0d, 0x0e, 0x0f  // 12, 13, 14, 15
+        0x4D, 0x53, 0x47, 0x20, // Message from the man in the blue disk
+        0x46, 0x52, 0x4F, 0x4D, 
+        0x20, 0x44, 0x41, 0x20, 
+        0x44, 0x49, 0x53, 0x4B  
     };
     byte trailerBlock   = 7;
     MFRC522::StatusCode status;
@@ -180,9 +180,13 @@ void loop() {
     }
     Serial.println();
 
+    //Data at blockAddress to UTF8 conversion
+    dumpToString(buffer, blockAddr);
+
     // Dump the sector data
     Serial.println(F("Current data in sector:"));
     mfrc522.PICC_DumpMifareClassicSectorToSerial(&(mfrc522.uid), &key, sector);
+    Serial.println();
     Serial.println();
 
     // Halt PICC
@@ -201,3 +205,13 @@ void dump_byte_array(byte *buffer, byte bufferSize) {
     }
 }
 
+void dumpToString(byte *buffer, byte addr){
+    Serial.println(F("Data at block"));
+    Serial.print(addr);
+    Serial.print(F(" converted as UTF8:"));
+    for(byte i = 0; i<16; i++){
+      Serial.print(buffer[i] < 0x10?" 0":" ");
+      Serial.print((char) buffer[i]);
+    }
+    Serial.println();
+}
