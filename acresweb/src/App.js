@@ -3,6 +3,7 @@ import EmployeeRegistration from './components/EmployeeRegisteration';
 import TaskManagement from './components/TaskManagement';
 import Login from './components/Login';
 import { useState } from 'react';
+import AdminDashboard from './components/AdminDashboard';
 
 
 function App() {
@@ -30,7 +31,7 @@ function App() {
   //return<EmployeeRegistration/>
   return(
     <>
-    <div id='header'>
+    {/* <div id='header'>
       <button onClick={() =>{ 
       setShowLogin(true);
       setShowRegistration(false);
@@ -44,9 +45,9 @@ function App() {
 
 
     {showLogin?<Login/>:<></>}
-    {showRegistration?<EmployeeRegistration/>:<></>}
+    {showRegistration?<EmployeeRegistration/>:<></>} */}
 
-  
+    <AdminDashboard/>
 
     </>
   )
