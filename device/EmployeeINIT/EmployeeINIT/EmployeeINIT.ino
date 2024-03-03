@@ -23,14 +23,41 @@ void setup() {
     }
 }
 
-int n;
-
-
 /*
   Main loop.
 */
 
 void loop() {
+    // Making dataBlock
+    byte sector         = 1;
+    byte blockAddr      = 4;
+    byte dataBlock[16];
+    for (int i = 0; i < 16; i++){
+      dataBlock[i] = 0x00;
+    }
+
+    byte trailerBlock   = 7;
+    MFRC522::StatusCode status;
+    byte buffer[18];
+    byte size = sizeof(buffer);
+    int temp;
+    int arrayLength;
+    char charNum[arrayLength];
+    String totalString;
+
+    for (int i = 0; i < 16; i++){
+      String stringNum;
+      if(Serial.available()>0){//checks if there is data to be read
+        temp = Serial.read();
+        stringNum = String(temp, HEX);
+        Serial.println(stringNum);
+      }
+      totalString = "0x"+stringNum;
+      arrayLength = totalString.length();
+      totalString.toCharArray(charNum,4);
+      dataBlock[i] = charNum;
+    }
+
     // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
     if ( ! mfrc522.PICC_IsNewCardPresent())
         return;
@@ -39,29 +66,6 @@ void loop() {
     if ( ! mfrc522.PICC_ReadCardSerial())
         return;
 
-    // Writing the ID
-
-    
-    // Making dataBlock
-    byte sector         = 1;
-    byte blockAddr      = 4;
-    byte dataBlock[16]  = {};
-    byte trailerBlock   = 7;
-    MFRC522::StatusCode status;
-    byte buffer[18];
-    byte size = sizeof(buffer);
-
-    for (int i = 0; i < 16; i++){
-      String stringNum;
-      if(Serial.available()>0){//checks if there is data to be read
-        stringNum = String(Serial.read(), HEX);
-      }
-      String totalString = "0x"+stringNum;
-      int arrayLength = totalString.length();
-      char charNum[arrayLength];
-      totalString.toCharArray(charNum,arrayLength);
-      dataBlock[i] = charNum;
-    }
 
     //Authenticating A then B
     Serial.println(F("Authenticating using key A..."));
@@ -87,6 +91,17 @@ void loop() {
         Serial.println(mfrc522.GetStatusCodeName(status));
     }
     Serial.println();
+
+    // Read data from the block
+    Serial.print(F("Reading data from block ")); Serial.print(blockAddr);
+    Serial.println(F(" ..."));
+    status = (MFRC522::StatusCode) mfrc522.MIFARE_Read(blockAddr, buffer, &size);
+    if (status != MFRC522::STATUS_OK) {
+        Serial.print(F("MIFARE_Read() failed: "));
+        Serial.println(mfrc522.GetStatusCodeName(status));
+    }
+    Serial.print(F("Data in block ")); Serial.print(blockAddr); Serial.println(F(":"));
+    dump_byte_array(buffer, 16); Serial.println();
 
     // Check if data was uploaded right
     Serial.println(F("Checking result..."));
