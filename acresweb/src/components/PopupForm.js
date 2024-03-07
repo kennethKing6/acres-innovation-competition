@@ -5,7 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 
-const PopupForm = ({ openForm,children  }) => {
+const PopupForm = ({ openForm,children,onClose=()=>{},title  }) => {
     const [open,setOpen] = useState(openForm)
     const [close,setClose] = useState(true)
 
@@ -16,11 +16,12 @@ const PopupForm = ({ openForm,children  }) => {
     const handleClose = ()=>{
         setClose(true);
         setOpen(false)
+        onClose()
     }
     return (
-      <Dialog open={open} >
-        <DialogTitle>Popup Form Title</DialogTitle>
-        <DialogContent>
+      <Dialog open={open} onClose={onClose}>
+        <DialogTitle sx={{fontSize:50}}>{title}</DialogTitle>
+        <DialogContent sx={{width:'100%'}}>
           {children}
         </DialogContent>
         <DialogActions>

@@ -24,14 +24,13 @@ export default function AdminDashboard() {
     ]
   return (
     <Grid container>
-        <Grid container><AddButton onPress={()=>{}}/></Grid>
-        <PopupForm openForm={true} ><TaskManagement/> </PopupForm>
+      
     {category.map(({color,name,bgColor,onPress})=>{{
         return <Grid item sx={{flex:1,padding:5}}><AdminTaskCategory onPress={onPress} selected={name === selected} title={name} bgColor={bgColor} textColor={color}/></Grid>
     }})}
         <Grid container  sx={{alignItems:'center',justifyContent:'center'}} >
 
-            <Grid item sx={{width:'60%',backgroundColor:'gray',}}>
+            <Grid item sx={{width:'60%',}}>
             {selected === PROJECTS_CATEGORY?<AdminProjects/>:<></>}
             {selected === SITE_CATEGORY?<AdminSites/>:<></>}
             {selected === EMPLOYEE_CATEGORY?<AdminEmployee/>:<></>}
