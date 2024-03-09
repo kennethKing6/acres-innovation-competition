@@ -1,19 +1,36 @@
 import { Grid, Typography } from '@mui/material'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HomeButton from './HomeButton';
 import AddButton from './AddButton';
 import PopupForm from './PopupForm';
 import CreateNewProject from './CreateNewProject';
 import TaskButton from './TaskButton';
 import TaskManagement from './TaskManagement';
+import { API_URL } from '../api/Endpoints';
 
 export default function AdminProjects() {
-    const [sites,setSites] = useState([{name:"Roller Coaster"},{name:"Bike mounting"}])
+    const [projects,setProjects] = useState([])
     const [openCreateNewProjectPopup,setopenCreateNewProjectPopup] = useState(false)
     const [openCreateNewTaskPopup,setopenCreateNewTaskPopup] = useState(false)
-
     const [selectedProject,setSelectedProject] = useState(null)
+    const [newProject,setNewProject] = useState()
 
+    useEffect(()=>{
+        getProjects().then((data)=>setProjects([...data])).catch()
+
+    },[newProject])
+
+
+    useEffect(()=>{
+        getProjects().then((data)=>setProjects([...data])).catch()
+    },[])
+    
+    async function getProjects(){
+        const response = await fetch(`${API_URL}/list-projects`)
+        const json = await response.json()
+        const {data} =  json
+        return data
+    }
     const handleCreateNewProjectPopup = ()=>{
         setopenCreateNewProjectPopup(!openCreateNewProjectPopup)
     }
@@ -22,15 +39,13 @@ export default function AdminProjects() {
     }
   return ( 
    <Grid container>
-    <Grid item> <HomeButton sx={{color:'green',fontSize:30,position:'relative',top:10}} onPress={()=>setSelectedProject(null)}/></Grid>
-    <Grid item><AddButton onPress={()=>handleCreateNewProjectPopup()}/> </Grid>
-    <Grid item><TaskButton onPress={()=>handleCreateNewTaskPopup()}/> </Grid>
 
-    <PopupForm title={"Create New Project"} openForm={openCreateNewProjectPopup} onClose={handleCreateNewProjectPopup}><CreateNewProject/> </PopupForm>
+
+    <CreateNewProject onNewProject={(project)=>setNewProject(project)}/>
     <PopupForm title={"Create New Task"} openForm={openCreateNewTaskPopup} onClose={handleCreateNewTaskPopup}><TaskManagement/> </PopupForm>
 
      {selectedProject?<Grid container sx={styles.page}><Typography >Projects Details goes here</Typography></Grid>:<></>}
-    {!selectedProject && sites.map((data)=>{
+    {!selectedProject && projects.map((data)=>{
         return <Grid container sx={{padding:5,borderBottom:1}}>
             <Typography>{data.name}</Typography>
         </Grid>

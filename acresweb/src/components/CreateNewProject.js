@@ -2,19 +2,28 @@ import React, { useEffect, useState } from 'react'
 import {TextField,Button, Grid,Card,CardActions,CardContent,Typography,} from '@mui/material'
 import TopMarginSpace from './TopSpace'
 import { API_URL } from '../api/Endpoints'
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-export default function CreateNewProject() {
+import PopupForm from './PopupForm';
+import HomeButton from './HomeButton';
+import AddButton from './AddButton';
+import TaskButton from './TaskButton';
+export default function CreateNewProject({
+  onNewProject = ()=>{}
+}) {
 
-    const [FirstName,setFirstName] = useState();
+    const [ProjectName,setProjectName] = useState();
+    const [SelectedSites,setSelectedSites] = useState();
     const [LastName,setLastName] = useState();
     const [employeeEmail,setEmployeeEmail] = useState();
     const [Password,setPassword] = useState();
     const [EmployeeID,setEmployeeID] = useState();
     const [EmployeeIDDescription,setEmployeeIDDescription] = useState();
+    const [openCreateNewProjectPopup,setopenCreateNewProjectPopup] = useState(false)
+    const [selectedProject,setSelectedProject] = useState(null)
+
 
     const [EmployeeIDs,setEmployeeIDs] = useState([])
 
@@ -29,49 +38,55 @@ export default function CreateNewProject() {
         return data
     }
 
-    async function addNewEmployeeID(){
-       await fetch(`${API_URL}/add-EmployeeID`,{
+    async function addNewProject(){
+      const newProject = {
+        name:ProjectName,
+        site:SelectedSites
+    }
+       await fetch(`${API_URL}/add-project`,{
             method:"POST",
-            body:JSON.stringify({
-                email:employeeEmail,
-                FirstName:FirstName,
-                description:EmployeeIDDescription,
-                Password:Password,
-                EmployeeID:EmployeeID
-            }),
+            body:JSON.stringify(newProject),
             headers:{
                 "content-type":"application/json"
             }
         })
-        setFirstName('')
-        setEmployeeEmail('')
-        setPassword('')
-        setEmployeeID('')
-        setEmployeeIDDescription('')
+        onNewProject(newProject)
        
     }
- /**
-     * 
-     * @param {object} newUser 
-     * @param {string} newUser.firstName
-     * @param {string} newUser.lastName
-     * @param {string} newUser.email
-     * @param {string} newUser.password
-     * @param {string} newUser.employeeID
-     */
+    const handleCreateNewProjectPopup = ()=>{
+      setopenCreateNewProjectPopup(!openCreateNewProjectPopup)
+  }
+
+
   return (
     <Grid container  >
-    <TextField sx={styles.textField} id="outlined-basic"  value={FirstName} label="Project Name" variant="outlined" onChange={(e)=>setFirstName(e.target.value)}/>
+       <Grid item> <HomeButton sx={{color:'green',fontSize:30,position:'relative',top:10}} onPress={()=>setSelectedProject(null)}/></Grid>
+    <Grid item><AddButton onPress={()=>handleCreateNewProjectPopup()}/> </Grid>
+    {/* <Grid item><TaskButton onPress={()=>handleCreateNewTaskPopup()}/> </Grid> */}
+      <PopupForm title={"Create New Project"} openForm={openCreateNewProjectPopup} onClose={handleCreateNewProjectPopup} onSubmit={async ()=>await addNewProject()}>
+    <TextField sx={styles.textField} id="outlined-basic"  value={ProjectName} label="Project Name" variant="outlined" onChange={(e)=>setProjectName(e.target.value)}/>
     <TopMarginSpace/>
-    <AcresSites/>
+    <AcresSites onCurrentSite={(site)=>setSelectedSites(site)}/>
+    </PopupForm>
     </Grid>
   )
 }
 
 
-function AcresSites(){
+function AcresSites({onCurrentSite = ()=>{}}){
   const [selectedSites,setSelectedSites] = useState([])
   const [sites,setSites] = useState([])
+  useEffect(()=>{
+    getSites().then((data)=>setSites([...data])).catch()
+},[])
+
+
+async function getSites(){
+    const response = await fetch(`${API_URL}/list-sites`)
+    const json = await response.json()
+    const {data} =  json
+    return data
+}
   return (
     <FormControl sx={{width:'90%'}}>
   <InputLabel id="demo-simple-select-label">Company Sites</InputLabel>
@@ -80,10 +95,13 @@ function AcresSites(){
     id="demo-simple-select"
     value={selectedSites}
     label="Sites"
-    onChange={(e)=>setSelectedSites(e.target.value)}
+    onChange={(e)=>{
+      setSelectedSites(e.target.value)
+      onCurrentSite(e.target.value)
+    }}
   >
-    {sites.map((currentSite)=>{
-      return (<MenuItem value={currentSite}>{currentSite}</MenuItem>)
+    {sites.map(({name})=>{
+      return (<MenuItem value={name}>{name}</MenuItem>)
     })}
 
   </Select>
