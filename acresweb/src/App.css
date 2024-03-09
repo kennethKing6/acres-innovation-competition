@@ -44,5 +44,10 @@
 }
 
 .header button {
-  text-size: 20px;
+  size: 40px;
+}
+
+.header1 button
+{
+  align-content: right;
 }

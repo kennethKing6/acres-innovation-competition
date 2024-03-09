@@ -12,14 +12,11 @@ export default function EmployeeRegistration() {
 
     const [password,setPasssword] = useState();
 
-
-    
-
     
     return (
         <Grid container  sx={{flex:1,flexDirection:'column',padding:10,}} >
 
-           <Grid container1  sx={{flex:1,flexDirection:'row',padding:5,marginLeft:35}} >
+           <Grid container1  sx={{flex:1,flexDirection:'row',padding:5,marginLeft:16}} >
            <TextField id="outlined-basic" value={employeeFirstName} label="First Name" variant="outlined" onChange={(e)=>setTitleF(e.target.value)}/>
            <WidthSpace/>
            <TextField id="outlined-basic" value={employeeLastName} label="Last Name" variant="outlined" onChange={(e)=>setTitleL(e.target.value)}/>
