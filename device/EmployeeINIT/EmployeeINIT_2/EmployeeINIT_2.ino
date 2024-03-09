@@ -11,6 +11,8 @@ MFRC522::MIFARE_Key key;
 /**
  * Initialize.
  */
+byte dataBlock[16];
+
 void setup() {
     Serial.begin(9600); // Initialize serial communications with the PC
     SPI.begin();        // Init SPI bus
@@ -21,6 +23,10 @@ void setup() {
     for (byte i = 0; i < 6; i++) {
         key.keyByte[i] = 0xFF;
     }
+
+    for (int i = 0; i<16; i++){
+        dataBlock[i] = 0x00;
+    }
 }
 
 /*
@@ -28,35 +34,6 @@ void setup() {
 */
 
 void loop() {
-    // Making dataBlock
-    byte sector         = 1;
-    byte blockAddr      = 4;
-    byte dataBlock[16];
-    for (int i = 0; i < 16; i++){
-      dataBlock[i] = 0x00;
-    }
-    byte trailerBlock   = 7;
-    MFRC522::StatusCode status;
-    byte buffer[18];
-    byte size = sizeof(buffer);
-    
-    int temp;
-    int arrayLength;
-    char charNum[5];
-    String totalString;
-
-    for (int i = 0; i < 16; i++){
-      String stringNum;
-      if(Serial.available()>0){//checks if there is data to be read
-        temp = Serial.read();
-        stringNum = String(temp, HEX);
-        Serial.println(stringNum);
-      }
-      totalString = "0x"+stringNum;
-      totalString.toCharArray(charNum,4);
-      dataBlock[i] = charNum;
-    }
-
     // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
     if ( ! mfrc522.PICC_IsNewCardPresent())
         return;
@@ -65,6 +42,16 @@ void loop() {
     if ( ! mfrc522.PICC_ReadCardSerial())
         return;
 
+    // Some data about datablock
+    byte sector         = 1;
+    byte blockAddr      = 4;
+    byte trailerBlock   = 7;
+    MFRC522::StatusCode status;
+    byte buffer[18];
+    byte size = sizeof(buffer);
+
+    // Actually getting serial onto datablock
+    serialToArray(dataBlock);
 
     //Authenticating A then B
     Serial.println(F("Authenticating using key A..."));
@@ -141,4 +128,24 @@ void dumpToString(byte *buffer, byte addr){
       Serial.print((char) buffer[i]);
     }
     Serial.println();
+}
+
+void serialToArray(byte *raymond){
+    byte dummy[16];
+    int count = 0;
+    while (count<16){
+      if(Serial.available()>0){
+        dummy[count] = Serial.read();
+        count++;
+      }
+    }
+
+    if(sizeof(dummy) == 16){
+      for(int i = 0; i<16; i++){
+        raymond[i] = dummy[i];
+      }
+    }
+    else{
+      Serial.print(F("Raymond Error"));
+    }
 }
