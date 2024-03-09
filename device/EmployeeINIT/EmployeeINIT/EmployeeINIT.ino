@@ -8,6 +8,8 @@ MFRC522 mfrc522(SS_PIN, RST_PIN);   // Create MFRC522 instance.
 
 MFRC522::MIFARE_Key key;
 
+byte dataBlock[16];
+int temp;
 /**
  * Initialize.
  */
@@ -21,6 +23,17 @@ void setup() {
     for (byte i = 0; i < 6; i++) {
         key.keyByte[i] = 0xFF;
     }
+    
+
+    for (int i = 0; i < 16; i++){
+      dataBlock[i] = 0x00;
+    }
+
+    for (int i = 0; i < 16 && Serial.available()>0; i++){
+      //checks if there is data to be read
+        temp = Serial.read();
+        dataBlock[i] = (byte)temp;
+    }
 }
 
 /*
@@ -31,31 +44,8 @@ void loop() {
     // Making dataBlock
     byte sector         = 1;
     byte blockAddr      = 4;
-    byte dataBlock[16];
-    for (int i = 0; i < 16; i++){
-      dataBlock[i] = 0x00;
-    }
     byte trailerBlock   = 7;
     MFRC522::StatusCode status;
-    byte buffer[18];
-    byte size = sizeof(buffer);
-    
-    int temp;
-    int arrayLength;
-    char charNum[5];
-    String totalString;
-
-    for (int i = 0; i < 16; i++){
-      String stringNum;
-      if(Serial.available()>0){//checks if there is data to be read
-        temp = Serial.read();
-        stringNum = String(temp, HEX);
-        Serial.println(stringNum);
-      }
-      totalString = "0x"+stringNum;
-      totalString.toCharArray(charNum,4);
-      dataBlock[i] = charNum;
-    }
 
     // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
     if ( ! mfrc522.PICC_IsNewCardPresent())
@@ -66,58 +56,8 @@ void loop() {
         return;
 
 
-    //Authenticating A then B
-    Serial.println(F("Authenticating using key A..."));
-    status = (MFRC522::StatusCode) mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &key, &(mfrc522.uid));
-    if (status != MFRC522::STATUS_OK) {
-        Serial.print(F("PCD_Authenticate() failed: "));
-        Serial.println(mfrc522.GetStatusCodeName(status));
-        return;
-    }
-    Serial.println(F("Authenticating again using key B..."));
-    status = (MFRC522::StatusCode) mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, &key, &(mfrc522.uid));
-    if (status != MFRC522::STATUS_OK) {
-        Serial.print(F("PCD_Authenticate() failed: "));
-        Serial.println(mfrc522.GetStatusCodeName(status));
-        return;
-    }
-
     // Write dataBlock to tag
-    dump_byte_array(dataBlock, 16); Serial.println();
     status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockAddr, dataBlock, 16);
-    if (status != MFRC522::STATUS_OK) {
-        Serial.print(F("MIFARE_Write() failed: "));
-        Serial.println(mfrc522.GetStatusCodeName(status));
-    }
-    Serial.println();
-
-    // Read data from the block
-    Serial.print(F("Reading data from block ")); Serial.print(blockAddr);
-    Serial.println(F(" ..."));
-    status = (MFRC522::StatusCode) mfrc522.MIFARE_Read(blockAddr, buffer, &size);
-    if (status != MFRC522::STATUS_OK) {
-        Serial.print(F("MIFARE_Read() failed: "));
-        Serial.println(mfrc522.GetStatusCodeName(status));
-    }
-    Serial.print(F("Data in block ")); Serial.print(blockAddr); Serial.println(F(":"));
-    dump_byte_array(buffer, 16); Serial.println();
-
-    // Check if data was uploaded right
-    Serial.println(F("Checking result..."));
-    byte count = 0;
-    for (byte i = 0; i < 16; i++) {
-        // Compare buffer (= what we've read) with dataBlock (= what we've written)
-        if (buffer[i] == dataBlock[i])
-            count++;
-    }
-    Serial.print(F("Number of bytes that match = ")); Serial.println(count);
-    if (count == 16) {
-        Serial.println(F("Success :-)"));
-    } else {
-        Serial.println(F("Failure, no match :-("));
-        Serial.println(F("  perhaps the write didn't work properly..."));
-    }
-    Serial.println();
 
     // Halt PICC
     mfrc522.PICC_HaltA();
