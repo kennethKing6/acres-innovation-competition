@@ -5,6 +5,7 @@ import TaskManagement from './components/TaskManagement';
 import Login from './components/Login';
 import { useState } from 'react';
 import AdminDashboard from './components/AdminDashboard';
+import EmployeeDetails from './components/EmployeeDetails';
 
 
 function App() {
@@ -64,7 +65,8 @@ function App() {
     {showLogin?<Login/>:<></>}
     {showRegistration?<EmployeeRegistration/>:<></>} */}
 
-    <AdminDashboard/>
+    {/* <AdminDashboard/> */}
+    <EmployeeDetails/>
 
     </>
   )
