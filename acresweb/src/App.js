@@ -4,8 +4,7 @@ import EmployeeRegistration from './components/EmployeeRegisteration';
 import TaskManagement from './components/TaskManagement';
 import Login from './components/Login';
 import { useState } from 'react';
-import WidthSpace from './components/WidthSpace';
-import { brown } from '@mui/material/colors';
+import AdminDashboard from './components/AdminDashboard';
 
 
 function App() {
@@ -44,14 +43,8 @@ function App() {
   //return<EmployeeRegistration/>
   return(
     <>
-    <div id='header1'>
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '30vh',backgroundColor:'#00703b' }}>
-    <img src= {myImage} alt='myImage' />
-    </div>
-    
-    <div id='header'>
-      <button style={buttonStyles} onClick={() =>{ 
-        
+    {/* <div id='header'>
+      <button onClick={() =>{ 
       setShowLogin(true);
       setShowRegistration(false);
       }} 
@@ -69,9 +62,9 @@ function App() {
 
 
     {showLogin?<Login/>:<></>}
-    {showRegistration?<EmployeeRegistration/>:<></>}
+    {showRegistration?<EmployeeRegistration/>:<></>} */}
 
-  
+    <AdminDashboard/>
 
     </>
   )
