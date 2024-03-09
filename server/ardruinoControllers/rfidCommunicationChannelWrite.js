@@ -14,7 +14,7 @@ port.on('error', function(err) {
 port.on("open", function() {
     console.log("-- Connection opened --");
     
-         port.write('Hello world', function(err) {
+         port.write('No099SOSNo099SOS', function(err) {
              if (err) {
              return console.log('Error on write: ', err.message)
              }
