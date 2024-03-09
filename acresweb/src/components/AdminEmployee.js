@@ -10,6 +10,7 @@ import TaskManagement from './TaskManagement';
 import CreateNewEmployee from './CreateNewEmployee';
 import HomeButton from './HomeButton';
 import { API_URL } from '../api/Endpoints';
+import EmployeeDetails from './EmployeeDetails';
 export default function AdminEmployee() {
     const [employees,setEmployees] = useState([])
     const [openAddNewEmployeePopup,setOpenAddNewEmployeePopup] = useState(false)
@@ -45,7 +46,14 @@ export default function AdminEmployee() {
   
     <CreateNewEmployee onEmployeeAdded={(createdEmployee)=>setNewEmployee(createdEmployee)} onBackHome={()=>setSelectedEmployee(null)}/>
 
-    {selectedEmployee?<Grid container sx={styles.page}><Typography >{selectedEmployee.firstName}</Typography></Grid>:<></>}
+    {selectedEmployee?<Grid container sx={styles.page}>
+        <EmployeeDetails 
+        employeeEmail={selectedEmployee.email} 
+        employeeID={selectedEmployee.employeeID}
+        firstName={selectedEmployee.firstName}
+        lastName={selectedEmployee.lastName}
+        workType={selectedEmployee.workType}/>
+        </Grid>:<></>}
     {!selectedEmployee && employees.map((data)=>{
         const {firstName,lastName} = data
         return <Grid container sx={styles.page} onClick={()=>setSelectedEmployee(data)}>

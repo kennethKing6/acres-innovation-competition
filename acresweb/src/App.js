@@ -1,5 +1,5 @@
 import './App.css';
-import myImage from '/Users/shubham/Documents/acres-innovation-competition/acresweb/src/assets/ACR-logo-web-2022.png'
+import myImage from './assets/ACR-logo-web-2022.png'
 import EmployeeRegistration from './components/EmployeeRegisteration';
 import TaskManagement from './components/TaskManagement';
 import Login from './components/Login';
@@ -65,8 +65,7 @@ function App() {
     {showLogin?<Login/>:<></>}
     {showRegistration?<EmployeeRegistration/>:<></>} */}
 
-    {/* <AdminDashboard/> */}
-    <EmployeeDetails/>
+    <AdminDashboard/>
 
     </>
   )

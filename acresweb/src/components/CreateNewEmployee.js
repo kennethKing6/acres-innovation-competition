@@ -16,6 +16,8 @@ export default function CreateNewEmployee({
     const [Password,setPassword] = useState();
     const [EmployeeID,setEmployeeID] = useState();
     const [EmployeeIDDescription,setEmployeeIDDescription] = useState();
+    const [workType,setWorkType] = useState();
+
     const [openAddNewEmployeePopup,setOpenAddNewEmployeePopup] = useState(false)
 
     const handleNewEmployeePopup = ()=>{
@@ -29,7 +31,8 @@ export default function CreateNewEmployee({
         description:EmployeeIDDescription,
         password:Password,
         employeeID:EmployeeID,
-        lastName:LastName
+        lastName:LastName,
+        workType:workType
     }
        await fetch(`${API_URL}/add-EmployeeID`,{
             method:"POST",
@@ -70,6 +73,8 @@ export default function CreateNewEmployee({
     <TextField sx={styles.textField} id="outlined-basic" value={EmployeeID} label="EmployeeID" variant="outlined" onChange={(e)=>setEmployeeID(e.target.value)}/>
     <TopMarginSpace/>
     <TextField sx={styles.textField} id="outlined-basic" value={Password} type='password' label="Password" variant="outlined" onChange={(e)=>setPassword(e.target.value)}/>
+    <TopMarginSpace/>
+    <TextField sx={styles.textField} id="outlined-basic" value={workType} type='text' label="Work Type" variant="outlined" onChange={(e)=>setWorkType(e.target.value)}/>
     <TopMarginSpace/>
    
    
