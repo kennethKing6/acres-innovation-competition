@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react'
 import {TextField,Button, Grid,Card,CardActions,CardContent,Typography,} from '@mui/material'
 import TopMarginSpace from './TopSpace'
 import { API_URL } from '../api/Endpoints'
-export default function CreateNewEmployee() {
+import PopupForm from './PopupForm';
+import HomeButton from './HomeButton';
+import AddButton from './AddButton';
+export default function CreateNewEmployee({
+  onEmployeeAdded=()=>{},
+  onBackHome = ()=>{}
+}) {
 
     const [FirstName,setFirstName] = useState();
     const [LastName,setLastName] = useState();
@@ -10,30 +16,24 @@ export default function CreateNewEmployee() {
     const [Password,setPassword] = useState();
     const [EmployeeID,setEmployeeID] = useState();
     const [EmployeeIDDescription,setEmployeeIDDescription] = useState();
+    const [openAddNewEmployeePopup,setOpenAddNewEmployeePopup] = useState(false)
 
-    const [EmployeeIDs,setEmployeeIDs] = useState([])
-
-    useEffect(()=>{
-        getEmployeeIDs().then((data)=>setEmployeeIDs([...data])).catch()
-    },[])
-
-    async function getEmployeeIDs(){
-        const response = await fetch(`${API_URL}/EmployeeIDs`)
-        const json = await response.json()
-        const {data} =  json
-        return data
+    const handleNewEmployeePopup = ()=>{
+        setOpenAddNewEmployeePopup(!openAddNewEmployeePopup)
     }
 
     async function addNewEmployeeID(){
+      const employee = {
+        email:employeeEmail,
+        firstName:FirstName,
+        description:EmployeeIDDescription,
+        password:Password,
+        employeeID:EmployeeID,
+        lastName:LastName
+    }
        await fetch(`${API_URL}/add-EmployeeID`,{
             method:"POST",
-            body:JSON.stringify({
-                email:employeeEmail,
-                FirstName:FirstName,
-                description:EmployeeIDDescription,
-                Password:Password,
-                EmployeeID:EmployeeID
-            }),
+            body:JSON.stringify(employee),
             headers:{
                 "content-type":"application/json"
             }
@@ -43,7 +43,9 @@ export default function CreateNewEmployee() {
         setPassword('')
         setEmployeeID('')
         setEmployeeIDDescription('')
-       
+      
+        onEmployeeAdded(employee)
+
     }
  /**
      * 
@@ -55,7 +57,10 @@ export default function CreateNewEmployee() {
      * @param {string} newUser.employeeID
      */
   return (
-    <Grid container  >
+    <Grid container>
+       <Grid item> <HomeButton sx={{color:'green',fontSize:30,position:'relative',top:10}} onPress={()=>onBackHome(null)}/></Grid>
+    <Grid item><AddButton onPress={()=>handleNewEmployeePopup()}/> </Grid>
+      <PopupForm title={"Add New Employee"} openForm={openAddNewEmployeePopup} onClose={handleNewEmployeePopup} onSubmit={async ()=>await addNewEmployeeID()}>
     <TextField sx={styles.textField} id="outlined-basic"  value={FirstName} label="First Name" variant="outlined" onChange={(e)=>setFirstName(e.target.value)}/>
     <TopMarginSpace/>
     <TextField sx={styles.textField} id="outlined-basic"  value={LastName} label="Last Name" variant="outlined" onChange={(e)=>setLastName(e.target.value)}/>
@@ -68,6 +73,7 @@ export default function CreateNewEmployee() {
     <TopMarginSpace/>
    
    
+    </PopupForm>
     </Grid>
   )
 }

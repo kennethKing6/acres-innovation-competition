@@ -63,6 +63,10 @@ exports.ManagerRegistration = class ManagerRegistration{
         delete EmployeeDatabase[employeeID]
     }
 
+    static listEmployees(){
+        return Object.values(EmployeeDatabase)
+    }
+
 
     /**
      * @private
@@ -75,6 +79,7 @@ exports.ManagerRegistration = class ManagerRegistration{
        }
        return true
     }
+
 
  
 
