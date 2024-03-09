@@ -3,25 +3,41 @@ import Box from '@mui/material/Box';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import HomeButton from './HomeButton';
 import AddButton from './AddButton';
 import CreateNewSite from './CreateNewSite';
 import PopupForm from './PopupForm';
+import { API_URL } from '../api/Endpoints';
 
 export default function AdminSites() {
-    const [sites,setSites] = useState([{name:"Kamloops"},{name:"Kelowna"}])
-    const [openCreateNewProjectPopup,setopenCreateNewProjectPopup] = useState(false)
-    const [selectedProject,setSelectedProject] = useState(null)
+    const [sites,setSites] = useState([])
+    const [newSite,setNewSite] = useState()
 
-    const handleCreateNewProjectPopup = ()=>{
-        setopenCreateNewProjectPopup(!openCreateNewProjectPopup)
+
+
+    useEffect(()=>{
+        getSites().then((data)=>setSites([...data])).catch()
+
+    },[newSite])
+
+
+    useEffect(()=>{
+        getSites().then((data)=>setSites([...data])).catch()
+    },[])
+
+
+    async function getSites(){
+        const response = await fetch(`${API_URL}/list-sites`)
+        const json = await response.json()
+        const {data} =  json
+        console.log('sites =====',data)
+        return data
     }
   return (
    <Grid container>
-     <Grid item> <HomeButton sx={{color:'green',fontSize:30,position:'relative',top:10}} onPress={()=>setSelectedProject(null)}/></Grid>
-    <Grid item><AddButton onPress={()=>handleCreateNewProjectPopup()}/> </Grid>
-    <PopupForm title={"Add New Site"} openForm={openCreateNewProjectPopup} onClose={handleCreateNewProjectPopup}><CreateNewSite/> </PopupForm>
+   
+   <CreateNewSite onSiteAdded={(site)=>setNewSite(site)}/>
     {sites.map((data)=>{
         return <Grid container sx={{padding:5,borderBottom:1}}>
             <Typography>{data.name}</Typography>

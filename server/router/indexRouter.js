@@ -3,6 +3,8 @@ const TaskTracker = require('../tasks/TaskTracker');
 const { EmployeeRegistration } = require('../registration/employeeRegistration');
 const EmployeeDatabase = require('../database/EmployeeDatabase');
 const { ManagerRegistration } = require('../registration/adminRegistration');
+const SitesTracker = require('../workSites/SitesTracker');
+const WorkSitesDatabase = require('../database/WorkSitesDatabase');
 
 const router = express.Router()
 
@@ -57,6 +59,25 @@ router.get('/list-Employees',(req,res)=>{
    })
 
 })
+
+// -------------- Sites ----------------
+router.post('/add-site',(req,res)=>{
+    SitesTracker.createSite(req.body)
+    console.log('SItes database',WorkSitesDatabase)
+    res.status(200);
+    res.send({
+        message:'success'
+    })
+})
+router.get('/list-sites',(req,res)=>{
+    
+    res.status(200);
+    res.send({
+        message:'success',
+        data:SitesTracker.listSites()
+    })
+})
+
 
 
 exports.indexRouter = router;

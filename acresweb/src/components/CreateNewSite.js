@@ -7,62 +7,52 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-export default function CreateNewSite() {
+import HomeButton from './HomeButton';
+import AddButton from './AddButton';
+import PopupForm from './PopupForm';
+export default function CreateNewSite({
+  onSiteAdded=()=>{},
+  onBackHome = ()=>{}
+}) {
 
-    const [FirstName,setFirstName] = useState();
-    const [LastName,setLastName] = useState();
-    const [employeeEmail,setEmployeeEmail] = useState();
-    const [Password,setPassword] = useState();
-    const [EmployeeID,setEmployeeID] = useState();
-    const [EmployeeIDDescription,setEmployeeIDDescription] = useState();
+    const [Name,setName] = useState();
+    const [openCreateNewSitePopup,setopenCreateNewSitePopup] = useState(false)
+    const [selectedProject,setSelectedSites] = useState(null)
 
-    const [EmployeeIDs,setEmployeeIDs] = useState([])
 
-    useEffect(()=>{
-        getEmployeeIDs().then((data)=>setEmployeeIDs([...data])).catch()
-    },[])
+    
 
-    async function getEmployeeIDs(){
-        const response = await fetch(`${API_URL}/EmployeeIDs`)
-        const json = await response.json()
-        const {data} =  json
-        return data
+    async function addNewSite(){
+      const newSite = {
+        name:Name,
     }
-
-    async function addNewEmployeeID(){
-       await fetch(`${API_URL}/add-EmployeeID`,{
+       await fetch(`${API_URL}/add-site`,{
             method:"POST",
-            body:JSON.stringify({
-                email:employeeEmail,
-                FirstName:FirstName,
-                description:EmployeeIDDescription,
-                Password:Password,
-                EmployeeID:EmployeeID
-            }),
+            body:JSON.stringify(newSite),
             headers:{
                 "content-type":"application/json"
             }
         })
-        setFirstName('')
-        setEmployeeEmail('')
-        setPassword('')
-        setEmployeeID('')
-        setEmployeeIDDescription('')
+        setName('')
+        onSiteAdded(newSite)
+        onBackHome()
        
     }
- /**
-     * 
-     * @param {object} newUser 
-     * @param {string} newUser.firstName
-     * @param {string} newUser.lastName
-     * @param {string} newUser.email
-     * @param {string} newUser.password
-     * @param {string} newUser.employeeID
-     */
+
+  const handleCreateNewSitePopup = ()=>{
+    setopenCreateNewSitePopup(!openCreateNewSitePopup)
+}
+
+
   return (
     <Grid container  >
-    <TextField sx={styles.textField} id="outlined-basic"  value={FirstName} label="Site Name" variant="outlined" onChange={(e)=>setFirstName(e.target.value)}/>
-    <TopMarginSpace/>
+       <Grid item> <HomeButton sx={{color:'green',fontSize:30,position:'relative',top:10}} onPress={()=>setSelectedSites(null)}/></Grid>
+
+       <Grid item><AddButton onPress={()=>handleCreateNewSitePopup()}/> </Grid>
+        <PopupForm title={"Add New Site"} openForm={openCreateNewSitePopup} onClose={handleCreateNewSitePopup} onSubmit={async ()=>await addNewSite()}>
+        <TextField sx={styles.textField} id="outlined-basic"  value={Name} label="Site Name" variant="outlined" onChange={(e)=>setName(e.target.value)}/>
+        </PopupForm>
+      <TopMarginSpace/>
     </Grid>
   )
 }
