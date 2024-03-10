@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {TextField,Button, Grid,Card,CardActions,CardContent,Typography,} from '@mui/material'
+import {TextField,Button, Grid,Card,CardActions,CardContent,Typography, FormControl, Select, InputLabel, MenuItem,} from '@mui/material'
 import TopMarginSpace from './TopSpace'
 import { API_URL } from '../api/Endpoints'
 import PopupForm from './PopupForm';
@@ -16,6 +16,7 @@ export default function CreateNewTask({
     const [managerEmail,setManagerEmail] = useState();
     const [task,setTask] = useState();
     const [taskDescription,setTaskDescription] = useState();
+    const [selectedProject,setSelectedProject] = useState()
 
     const [openAddNewEmployeePopup,setOpenAddNewEmployeePopup] = useState(false)
 
@@ -31,7 +32,8 @@ export default function CreateNewTask({
         title:title,
         description:taskDescription,
         managerEmail:managerEmail,
-        task:task
+        task:task,
+        project:selectedProject
     }
       await fetch(`${API_URL}/add-task`,{
            method:"POST",
@@ -58,11 +60,13 @@ export default function CreateNewTask({
     }}>
       <Grid container   >
 
-      <TextField sx={styles.textField} id="outlined-basic" value={title} label="Title" variant="outlined" onChange={(e)=>setTitle(e.target.value)}/>
+    <TextField sx={styles.textField} id="outlined-basic" value={managerEmail} type='email' label="Manager Name" variant="outlined" onChange={(e)=>setManagerEmail(e.target.value)}/>
     <TopMarginSpace/>
-    <TextField sx={styles.textField} id="outlined-basic" value={employeeEmail} type='email' label="Employee Email" variant="outlined" onChange={(e)=>setEmployeeEmail(e.target.value)}/>
+    <AcresEmployees onCurrentEmployee={(employee)=>setEmployeeEmail(employee.email)}/>
     <TopMarginSpace/>
-    <TextField sx={styles.textField} id="outlined-basic" value={managerEmail} type='email' label="Managers Email" variant="outlined" onChange={(e)=>setManagerEmail(e.target.value)}/>
+    <AcresProjects onCurrentProject={(project)=>setSelectedProject(project)}/>
+    <TopMarginSpace/>
+    <TextField sx={styles.textField} id="outlined-basic" value={title} label="Title" variant="outlined" onChange={(e)=>setTitle(e.target.value)}/>
     <TopMarginSpace/>
     <TextField sx={styles.textField} id="outlined-basic" value={task} label="Task" variant="outlined" onChange={(e)=>setTask(e.target.value)}/>
     <TopMarginSpace/>
@@ -71,7 +75,7 @@ export default function CreateNewTask({
         value={taskDescription}
         onChange={(e)=>setTaskDescription(e.target.value)}
           id="outlined-multiline-static"
-          label="Task Description"
+          label="Task description"
           multiline
           rows={4}
         />
@@ -82,6 +86,85 @@ export default function CreateNewTask({
     </Grid>
   )
 }
+
+function AcresEmployees({onCurrentEmployee = ()=>{}}){
+  const [selectedEmployee,setSelectedEmployee] = useState()
+  const [employees,setEmployees] = useState([])
+  useEffect(()=>{
+    getEmployees().then((data)=>setEmployees([...data])).catch()
+},[])
+
+
+async function getEmployees(){
+    const response = await fetch(`${API_URL}/list-Employees`)
+    const json = await response.json()
+    const {data} =  json
+    return data
+}
+  return (
+    <FormControl sx={{width:'90%'}}>
+  <InputLabel id="demo-simple-select-label">Select employee</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={selectedEmployee}
+    label="Sites"
+    onChange={(e)=>{
+      setSelectedEmployee(e.target.value)
+      onCurrentEmployee(e.target.value)
+    }}
+  >
+    {employees.map((employee)=>{
+      return (<MenuItem value={employee}>{employee.firstName} {employee.lastName}</MenuItem>)
+    })}
+
+  </Select>
+</FormControl>
+  )
+}
+
+function AcresProjects({onCurrentProject = ()=>{}}){
+  const [selectedProjects,setSelectedProjects] = useState([])
+  const [projects,setProjects] = useState([])
+  useEffect(()=>{
+    getProjects().then((data)=>setProjects([...data])).catch()
+},[])
+
+
+async function getProjects(){
+    const response = await fetch(`${API_URL}/list-projects`)
+    const json = await response.json()
+    const {data} =  json
+    return data
+}
+  return (
+    <FormControl sx={{width:'90%'}}>
+  <InputLabel id="demo-simple-select-label">Company Projects</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    id="demo-simple-select"
+    value={selectedProjects}
+    label="Sites"
+    onChange={(e)=>{
+      setSelectedProjects(e.target.value)
+      onCurrentProject(e.target.value)
+    }}
+  >
+    {projects.map((project)=>{
+      return (<MenuItem value={project}>{project.name}</MenuItem>)
+    })}
+
+  </Select>
+</FormControl>
+  )
+}
+
+
+
+
+
+
+
 
 const styles = {
   textField:{
