@@ -2,6 +2,7 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import WidthSpace from './WidthSpace';
+import TasksUserList from './TasksUserList';
 
 export default function EmployeeDetails({
   firstName='',
@@ -52,7 +53,7 @@ export default function EmployeeDetails({
         {workType}
       </Typography>
       <WidthSpace/>
-
+    {employeeEmail?<TasksUserList email={employeeEmail}/>:<></>}
     </Box>
     );
   }

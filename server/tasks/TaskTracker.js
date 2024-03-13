@@ -29,4 +29,12 @@ module.exports = class TaskTracker{
     static listTasks(){
         return  Object.values(TaskTrackerDatabase).reverse()
     }
+
+    static getTaskByEmail(email){
+        const result = []
+        this.listTasks().forEach((task)=>{
+            if(task && task['email'] === email)result.push(task)
+        })
+    return result
+    }
 }

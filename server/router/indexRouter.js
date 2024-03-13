@@ -17,7 +17,7 @@ const router = express.Router()
 router.post('/add-task',(req,res)=>{
     const todo = req.body
     TaskTracker.createTask(req.body)
-    console.log('tasks',TaskTrackerDatabase)
+    // console.log('tasks',TaskTrackerDatabase)
     res.status(200);
     res.send({
         message:'success'
@@ -27,6 +27,19 @@ router.post('/add-task',(req,res)=>{
 router.get('/tasks',(req,res)=>{
     const tasks = TaskTracker.listTasks();
 
+    res.status(200);
+    res.json({
+        message:'success',
+        data:tasks
+    })
+
+})
+
+router.post('/tasks-by-email',(req,res)=>{
+    const {email} = req.body
+    console.log('tasks by email ',email)
+    const tasks = TaskTracker.getTaskByEmail(email);
+    console.log('tasks -----',tasks)
     res.status(200);
     res.json({
         message:'success',
@@ -62,7 +75,7 @@ router.get('/list-Employees',(req,res)=>{
 // -------------- Sites ----------------
 router.post('/add-site',(req,res)=>{
     SitesTracker.createSite(req.body)
-    console.log('SItes database',WorkSitesDatabase)
+    // console.log('SItes database',WorkSitesDatabase)
     res.status(200);
     res.send({
         message:'success'
