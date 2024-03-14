@@ -1,9 +1,21 @@
 import * as React from 'react';
+import {useState} from 'react'
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import WidthSpace from './WidthSpace';
 
 export default function EmployeeDetails() {
+
+    const [firstName,setFirstName] = React.useState()
+    const [LastName,setLastName] = useState()
+    const [employeeEmail,setEmployeeEmail] = useState()
+    const [employeeID,setEmployeeID] = useState()
+    const [EmployeeIDDescription,setEmployeeIDDescription] = useState()
+
+
+    React.useEffect(()=>{
+
+    },[])
   return (
 
     
@@ -22,28 +34,28 @@ export default function EmployeeDetails() {
 
 
         <Typography variant="h5" gutterBottom>
-        FirstName
+        {firstName}
       </Typography>
       <WidthSpace/>
 
       <Typography variant="h5" gutterBottom>
-        LastName
+        {LastName}
       </Typography>
       <WidthSpace/>
       
 
       <Typography variant="h5" gutterBottom>
-        employeeEmail
+        {employeeEmail}
       </Typography>
       <WidthSpace/>
 
       <Typography variant="h5" gutterBottom>
-        EmployeeID
+        {employeeID}
       </Typography>
       <WidthSpace/>
 
       <Typography variant="h5" gutterBottom>
-        Employee Description
+       { EmployeeIDDescription }
       </Typography>
       <WidthSpace/>
 

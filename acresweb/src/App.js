@@ -65,8 +65,8 @@ function App() {
     {showLogin?<Login/>:<></>}
     {showRegistration?<EmployeeRegistration/>:<></>} */}
 
-    {/* <AdminDashboard/> */}
-    <EmployeeDetails/>
+    <AdminDashboard/>
+    {/* <EmployeeDetails/> */}
 
     </>
   )
