@@ -12,7 +12,6 @@ exports.EmployeeRegistration = class EmployeeRegistration{
      * @param {string} newUser.employeeID
      */
     static createEmployee(newUser){
-       this.hasEmployee(newUser.employeeID)
         if(EmployeeDatabase[newUser.employeeID]){
             throw new Error("This employee already exists")
         }

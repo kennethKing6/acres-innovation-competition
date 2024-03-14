@@ -5,7 +5,7 @@ import TaskManagement from './components/TaskManagement';
 import Login from './components/Login';
 import { useState } from 'react';
 import AdminDashboard from './components/AdminDashboard';
-import EmployeeDetails from './components/EmployeeDetails';
+import EmployeeDetails from './components/';
 
 
 function App() {

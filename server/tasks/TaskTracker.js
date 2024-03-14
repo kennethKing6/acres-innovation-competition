@@ -1,17 +1,18 @@
 const TaskTrackerDatabase = require('../database/TaskTrackerDatabase')
 
 module.exports = class TaskTracker{
-    static createTask(email,title,descripton,managerEmail,task){
+    static createTask(data){
         const timestamp = Date.now()
         const id = timestamp + Math.random() + 1 + timestamp
         TaskTrackerDatabase[id] = {
-            email,
-            title,
-            descripton,
-            managerEmail,
-            task,
+            email:data.email,
+            title:data.title,
+            description:data.description,
+            managerEmail:data.managerEmail,
+            task:data.task,
             createdAt:timestamp,
-            completed:null
+            completed:null,
+            ...data
         }
     }
     static getTaskByUser(email){
@@ -27,5 +28,13 @@ module.exports = class TaskTracker{
     }
     static listTasks(){
         return  Object.values(TaskTrackerDatabase).reverse()
+    }
+
+    static getTaskByEmail(email){
+        const result = []
+        this.listTasks().forEach((task)=>{
+            if(task && task['email'] === email)result.push(task)
+        })
+    return result
     }
 }

@@ -1,18 +1,17 @@
 import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
-import AssignmentIcon from '@mui/icons-material/Assignment';
-
-const TaskButton = ({
+import DownloadIcon from '@mui/icons-material/Download';
+const DownloadButton = ({
     onPress=()=>{}
 }) => {
     return (
       <IconButton onClick={onPress}>
         <Avatar>
-          <AssignmentIcon sx={{color:'green'}}/>
+          <DownloadIcon sx={{color:'green'}}/>
         </Avatar>
       </IconButton>
     );
   };
   
-  export default TaskButton;
+  export default DownloadButton;
