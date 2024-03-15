@@ -10,6 +10,7 @@ MFRC522::MIFARE_Key key;
 
 byte dataBlock[16];
 int temp;
+int cerealsize;
 /**
  * Initialize.
  */
@@ -29,11 +30,7 @@ void setup() {
       dataBlock[i] = 0x00;
     }
 
-    for (int i = 0; i < 16 && Serial.available()>0; i++){
-      //checks if there is data to be read
-        temp = Serial.read();
-        dataBlock[i] = (byte)temp;
-    }
+    cerealsize=0;
 }
 
 /*
@@ -42,6 +39,13 @@ void setup() {
 
 void loop() {
     // Making dataBlock
+    if(Serial.available()>0){
+      cerealsize = Serial.available();
+      for(int i=0;i<cerealsize;i++){
+        temp = Serial.read();
+        dataBlock[i] = (byte)temp;
+      }
+    }
     byte sector         = 1;
     byte blockAddr      = 4;
     byte trailerBlock   = 7;
@@ -57,7 +61,10 @@ void loop() {
 
 
     // Write dataBlock to tag
-    status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockAddr, dataBlock, 16);
+    for(int i=0;i<cerealsize;i++){
+      Serial.print(dataBlock[i]);
+    }
+    status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockAddr, dataBlock, &cerealsize);
 
     // Halt PICC
     mfrc522.PICC_HaltA();
