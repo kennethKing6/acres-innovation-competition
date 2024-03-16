@@ -98,7 +98,6 @@ void loop() {
     if (status != MFRC522::STATUS_OK) {
         Serial.println(mfrc522.GetStatusCodeName(status));
     }
-
   dumpToString(buffer, blockAddr);
 
     // Halt PICC
@@ -121,7 +120,7 @@ void dumpToString(byte *buffer, byte addr){
     Serial.println(F("Data at block"));
     Serial.print(addr);
     Serial.print(F(" converted as UTF8:"));
-    for(byte i = 0; i<16; i++){
+    for(int i = 0; i<16; i++){
       Serial.print(buffer[i] < 0x10?" 0":" ");
       Serial.print((char) buffer[i]);
     }
