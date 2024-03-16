@@ -46,9 +46,11 @@ void loop() {
         dataBlock[i] = (byte)temp;
       }
     }
+    
     byte sector         = 1;
     byte blockAddr      = 4;
     byte trailerBlock   = 7;
+    byte size           = 16;
     MFRC522::StatusCode status;
 
     // Reset the loop if no new card present on the sensor/reader. This saves the entire process when idle.
@@ -64,7 +66,21 @@ void loop() {
     for(int i=0;i<cerealsize;i++){
       Serial.print(dataBlock[i]);
     }
-    status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockAddr, dataBlock, &cerealsize);
+
+    status = (MFRC522::StatusCode) mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, &key, &(mfrc522.uid));
+    if (status != MFRC522::STATUS_OK) {
+        Serial.print(F("PCD_Authenticate() failed: "));
+        Serial.println(mfrc522.GetStatusCodeName(status));
+        return;
+    }
+    else if(status == MFRC522::STATUS_OK){Serial.println("Success");}
+    status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockAddr, dataBlock, size);
+    Serial.println(status);
+    if (status != MFRC522::STATUS_OK) {
+        Serial.print(F("MIFARE_Write failed: "));
+        Serial.println(mfrc522.GetStatusCodeName(status));
+        return;
+    }
 
     // Halt PICC
     mfrc522.PICC_HaltA();
