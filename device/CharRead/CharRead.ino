@@ -74,19 +74,21 @@ void loop() {
     // that is: sector #1, covering block #4 up to and including block #7
     byte sector         = 1;
     byte blockAddr      = 4;
-    byte dataBlock[]    = {
-        0x4D, 0x53, 0x47, 0x20, // Message from the man in the blue disk
-        0x46, 0x52, 0x4F, 0x4D, 
-        0x20, 0x44, 0x41, 0x20, 
-        0x44, 0x49, 0x53, 0x4B  
-    };
     byte trailerBlock   = 7;
-    MFRC522::StatusCode status;
     byte buffer[18];
-    byte size = sizeof(buffer);
+    byte size = 18;
+    MFRC522::StatusCode status;
 
     // Authenticate using key A
     status = (MFRC522::StatusCode) mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_A, trailerBlock, &key, &(mfrc522.uid));
+    if (status != MFRC522::STATUS_OK) {
+        Serial.println(mfrc522.GetStatusCodeName(status));
+        return;
+    }
+    
+
+    // Authenticate using key B
+    status = (MFRC522::StatusCode) mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, &key, &(mfrc522.uid));
     if (status != MFRC522::STATUS_OK) {
         Serial.println(mfrc522.GetStatusCodeName(status));
         return;
@@ -96,38 +98,7 @@ void loop() {
     if (status != MFRC522::STATUS_OK) {
         Serial.println(mfrc522.GetStatusCodeName(status));
     }
-
-    // Authenticate using key B
-    status = (MFRC522::StatusCode) mfrc522.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, trailerBlock, &key, &(mfrc522.uid));
-    if (status != MFRC522::STATUS_OK) {
-        Serial.println(mfrc522.GetStatusCodeName(status));
-        return;
-    }
-
-    // Write data to the block
-    status = (MFRC522::StatusCode) mfrc522.MIFARE_Write(blockAddr, dataBlock, 16);
-    if (status != MFRC522::STATUS_OK) {
-        Serial.println(mfrc522.GetStatusCodeName(status));
-    }
-
-    status = (MFRC522::StatusCode) mfrc522.MIFARE_Read(blockAddr, buffer, &size);
-    if (status != MFRC522::STATUS_OK) {
-        Serial.println(mfrc522.GetStatusCodeName(status));
-    }
-
-    dump_byte_array(buffer, 16);
-
-    // Check that data in block is what we have written
-    // by counting the number of bytes that are equal
-    byte count = 0;
-    for (byte i = 0; i < 16; i++) {
-        // Compare buffer (= what we've read) with dataBlock (= what we've written)
-        if (buffer[i] == dataBlock[i])
-            count++;
-    }
-    if (count != 16) {
-        Serial.println(F("Unknown Error"));
-    }
+  dumpToString(buffer, blockAddr);
 
     // Halt PICC
     mfrc522.PICC_HaltA();
@@ -149,7 +120,7 @@ void dumpToString(byte *buffer, byte addr){
     Serial.println(F("Data at block"));
     Serial.print(addr);
     Serial.print(F(" converted as UTF8:"));
-    for(byte i = 0; i<16; i++){
+    for(int i = 0; i<16; i++){
       Serial.print(buffer[i] < 0x10?" 0":" ");
       Serial.print((char) buffer[i]);
     }
