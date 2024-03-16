@@ -13,11 +13,17 @@ port.on('error', function(err) {
 
 port.on("open", function() {
     console.log("-- Connection opened --");
-    
-         port.write('No099SOSNo099SOS', function(err) {
-             if (err) {
-             return console.log('Error on write: ', err.message)
-             }
-             console.log('message written')
-         })
+       
+        
 });
+
+setInterval(()=>{
+  port.write('toyui','binary', function(err) {
+    if (err) {
+     console.log('Error on write: ', err.message)
+    }
+    console.log('message written')
+  })
+  console.log("Looping")
+},400)
+  
