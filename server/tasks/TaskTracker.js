@@ -37,4 +37,19 @@ module.exports = class TaskTracker{
         })
     return result
     }
+    static generateReport(){
+        const tasks =  this.listTasks()
+
+        return tasks.map((data,index)=>{
+            const {email,title,description,managerEmail,task,createdAt,completed,project:{createdAt:projectDate,name,site}} = data
+          
+            
+            return [index,email, title, timestampToHourFormat(createdAt), timestampToHourFormat(projectDate),site,name,task,description]
+        })
+    }
+}
+
+function timestampToHourFormat(timestamp){
+    const date = new Date(timestamp);
+    return  date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 }

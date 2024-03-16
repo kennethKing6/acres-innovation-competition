@@ -57,8 +57,8 @@ export default function CreateNewTask({
     <Grid container>
        <Grid item> <HomeButton sx={{color:'green',fontSize:30,position:'relative',top:10}} onPress={()=>onBackHome(null)}/></Grid>
     <Grid item><AddButton onPress={()=>handleNewEmployeePopup()}/> </Grid>
-    <Grid item><DownloadButton onPress={()=>{
-      ReportGenerator.generateReport()
+    <Grid item><DownloadButton onPress={async ()=>{
+      await ReportGenerator.generateReport()
     }}/> </Grid>
       <PopupForm title={"Add New Task"} openForm={openAddNewEmployeePopup} onClose={handleNewEmployeePopup} onSubmit={async ()=>{
         await addNewtask();

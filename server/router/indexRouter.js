@@ -26,7 +26,17 @@ router.post('/add-task',(req,res)=>{
 
 router.get('/tasks',(req,res)=>{
     const tasks = TaskTracker.listTasks();
+    console.log('********** tasks',tasks)
+    res.status(200);
+    res.json({
+        message:'success',
+        data:tasks
+    })
 
+})
+router.get('/generate-tasks-report',(req,res)=>{
+    const tasks = TaskTracker.generateReport();
+    console.log('********** tasks',tasks)
     res.status(200);
     res.json({
         message:'success',
