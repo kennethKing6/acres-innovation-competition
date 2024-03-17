@@ -13,6 +13,6 @@ app.use(bodyParser.json());
 app.use('/',indexRouter)
 
 
-app.listen(1000,()=>{
+app.listen(2000,()=>{
     console.log('listening')
 })
