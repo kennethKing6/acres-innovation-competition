@@ -1,11 +1,8 @@
 import './App.css';
-import myImage from '/Users/shubham/Documents/acres-innovation-competition/acresweb/src/assets/ACR-logo-web-2022.png'
-import EmployeeRegistration from './components/EmployeeRegisteration';
-import TaskManagement from './components/TaskManagement';
-import Login from './components/Login';
 import { useState } from 'react';
+//import {logo} from "./assets/acresLogo.png";
 import AdminDashboard from './components/AdminDashboard';
-import EmployeeDetails from './components/';
+
 
 
 function App() {
@@ -67,7 +64,7 @@ function App() {
 
     <AdminDashboard/>
     {/* <EmployeeDetails/> */}
-
+   
     </>
   )
 }
