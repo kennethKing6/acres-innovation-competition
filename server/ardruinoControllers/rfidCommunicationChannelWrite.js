@@ -3,7 +3,7 @@ const { SerialPort } = require('serialport')
 
 // Create a port
 const port = new SerialPort({
-  path: "/dev/tty.usbmodemFA131",
+  path: "COM3",
   baudRate: 9600,
 })
 // Open errors will be emitted as an error event
@@ -25,7 +25,7 @@ function writeToArdruino(data){
     console.log('message written')
   })
 }
-const dataToWrite = "123456789"
+const dataToWrite = "987654321"//NOTE: will not write the second character to the RFID tag
 writeToArdruino(dataToWrite)
 
 setInterval(()=>{

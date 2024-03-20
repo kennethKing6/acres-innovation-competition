@@ -31,7 +31,7 @@ void loop() {
     if (Serial.available() > 0) {
         cerealsize = Serial.available();
         for (int i = 0; i < cerealsize; i++) {
-            dataBlock[i] = Serial.read(); // Read data from Serial and store in dataBlock
+            dataBlock[i] = (byte)Serial.read(); // Read data from Serial and store in dataBlock
         }
         
         byte sector         = 1;
