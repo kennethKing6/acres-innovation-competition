@@ -1,3 +1,4 @@
+const ArdruinoDataInterface = require("../ardruinoControllers/ardruinoDataInterface")
 const EmployeeDatabase = require("../database/EmployeeDatabase")
 
 exports.EmployeeRegistration = class EmployeeRegistration{
@@ -21,6 +22,7 @@ exports.EmployeeRegistration = class EmployeeRegistration{
         password:newUser.password,
         creationDate:Date.now()
        } 
+       ArdruinoDataInterface.inputData = newUser.employeeID
     }
 
     static logInEmployee(employeeID,password){
@@ -31,6 +33,7 @@ exports.EmployeeRegistration = class EmployeeRegistration{
        
        const {password:employeePassword} = employee;
        if(employeePassword === password){
+        ArdruinoDataInterface.inputData = employeeID
         return employee
        }else{
         throw new Error("Unauthorized Access");
