@@ -1,4 +1,5 @@
-const { SerialPort } = require('serialport')
+const { SerialPort } = require('serialport');
+const ArdruinoDataInterface = require('./ardruinoDataInterface');
 
 
 // Create a port
@@ -17,7 +18,7 @@ port.on("open", function() {
         
 });
 
-function writeToArdruino(data){
+function writeToArdruino(){
   return port.write(data,'binary', function(err) {
     if (err) {
      console.log('Error on write: ', err.message)
@@ -25,11 +26,10 @@ function writeToArdruino(data){
     console.log('message written')
   })
 }
-const dataToWrite = "987654321"//NOTE: will not write the second character to the RFID tag
-writeToArdruino(dataToWrite)
+writeToArdruino(ArdruinoDataInterface.writeToTag())
 
 setInterval(()=>{
-  const result = writeToArdruino(dataToWrite)
+  const result = writeToArdruino(ArdruinoDataInterface.writeToTag())
   console.log("result",result)
-},1000)
+},400)
   
