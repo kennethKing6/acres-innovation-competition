@@ -1,4 +1,6 @@
+const ArdruinoDataInterface = require('../ardruinoControllers/ardruinoDataInterface')
 const TaskTrackerDatabase = require('../database/TaskTrackerDatabase')
+const HashActionsController = require('../HashActions/HashActionsController')
 
 module.exports = class TaskTracker{
     static createTask(data){
@@ -14,6 +16,10 @@ module.exports = class TaskTracker{
             completed:null,
             ...data
         }
+       const hashedTask =  HashActionsController.mapHashToTask(id)
+
+       //Push the task on the ardruino
+       ArdruinoDataInterface.inputData = hashedTask
     }
     static getTaskByUser(email){
          let currentUserTask = null;

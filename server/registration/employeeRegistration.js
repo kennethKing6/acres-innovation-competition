@@ -1,5 +1,6 @@
 const ArdruinoDataInterface = require("../ardruinoControllers/ardruinoDataInterface")
 const EmployeeDatabase = require("../database/EmployeeDatabase")
+const HashActionsController = require("../HashActions/HashActionsController")
 
 exports.EmployeeRegistration = class EmployeeRegistration{
 
@@ -22,8 +23,11 @@ exports.EmployeeRegistration = class EmployeeRegistration{
         password:newUser.password,
         creationDate:Date.now()
        } 
-       ArdruinoDataInterface.inputData = newUser.employeeID
-       console.log("ArdruinoDataInterface",ArdruinoDataInterface.inputData)
+       const hashedEmployee = HashActionsController.mapHashToEmployee(newUser.employeeID)
+
+       //write to ardruino 
+       ArdruinoDataInterface.inputData = hashedEmployee
+
     }
 
     static logInEmployee(employeeID,password){

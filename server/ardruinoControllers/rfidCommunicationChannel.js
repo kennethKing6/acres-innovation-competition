@@ -1,9 +1,10 @@
-const { SerialPort } = require('serialport')
+const { SerialPort } = require('serialport');
+const ArdruinoDataInterface = require('./ardruinoDataInterface');
 
 
 // Create a port
 const port = new SerialPort({
-  path: "COM3",
+  path: "/dev/tty.Bluetooth-Incoming-Port",
   baudRate: 9600,
 })
 // Open errors will be emitted as an error event
@@ -12,5 +13,7 @@ port.on('error', function(err) {
   })
 
 port.on("data", function(data) {
-    console.log("Data received: " + data);
+  const decryptedData = ArdruinoDataInterface.readFromTag(data)
+    console.log("Data received: " + decryptedData);
+    ArdruinoDataInterface.outputData = decryptedData;
 });

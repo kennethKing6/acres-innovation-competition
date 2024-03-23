@@ -2,6 +2,7 @@
 module.exports = class ArdruinoDataInterface{
 
     static inputData = "Hey you!"
+    static outputData;
 
 
     static writeToTag(){

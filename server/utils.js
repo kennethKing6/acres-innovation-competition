@@ -1,4 +1,4 @@
-function generateUniqueString(length) {
+exports.generateUniqueString = function generateUniqueString(length) {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz123456789';
     let result = '';
     const charactersLength = characters.length;
@@ -11,5 +11,4 @@ function generateUniqueString(length) {
     return result;
   }
   
-  console.log(generateUniqueString(10));
   
