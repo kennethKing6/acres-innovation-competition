@@ -32,6 +32,6 @@ function writeToArdruino(data){
 writeToArdruino(ArdruinoDataInterface.writeToTag())
 
 setInterval(()=>{
-  const result = writeToArdruino(ArdruinoDataInterface.writeToTag())
+   writeToArdruino(ArdruinoDataInterface.writeToTag())
 },1000)
   

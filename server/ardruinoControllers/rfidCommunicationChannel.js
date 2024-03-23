@@ -1,4 +1,5 @@
 const { SerialPort } = require('serialport');
+const { RFIDJobSiteTracker } = require('../accountability/rfidJobSiteTracker');
 const ArdruinoDataInterface = require('./ardruinoDataInterface');
 
 
@@ -16,4 +17,5 @@ port.on("data", function(data) {
   const decryptedData = ArdruinoDataInterface.readFromTag(data)
     console.log("Data received: " + decryptedData);
     ArdruinoDataInterface.outputData = decryptedData;
+    RFIDJobSiteTracker.inputToActions(decryptedData)
 });

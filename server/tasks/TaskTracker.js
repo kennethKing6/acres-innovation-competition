@@ -9,6 +9,7 @@ module.exports = class TaskTracker{
         TaskTrackerDatabase[id] = {
             email:data.email,
             title:data.title,
+            taskID:id,
             description:data.description,
             managerEmail:data.managerEmail,
             task:data.task,
@@ -50,12 +51,13 @@ module.exports = class TaskTracker{
             const {email,title,description,managerEmail,task,createdAt,completed,project:{createdAt:projectDate,name,site}} = data
           
             
-            return [index,email, title, timestampToHourFormat(createdAt), timestampToHourFormat(projectDate),site,name,task,description]
+            return [index,email, title, timestampToHourFormat(createdAt), timestampToHourFormat(completed),site,name,task,description]
         })
     }
 }
 
 function timestampToHourFormat(timestamp){
+    if(!timestamp)return "N/A"
     const date = new Date(timestamp);
     return  date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 }
