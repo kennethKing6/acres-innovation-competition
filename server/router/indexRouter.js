@@ -85,7 +85,7 @@ router.get('/list-Employees',(req,res)=>{
 // -------------- Sites ----------------
 router.post('/add-site',(req,res)=>{
     SitesTracker.createSite(req.body)
-    // console.log('SItes database',WorkSitesDatabase)
+    console.log('SItes database',WorkSitesDatabase)
     res.status(200);
     res.send({
         message:'success'

@@ -1,7 +1,7 @@
 import './App.css';
 import { useState } from 'react';
-//import {logo} from "./assets/acresLogo.png";
-//import AdminDashboard from './components/AdminDashboard';
+import {logo} from "./assets/acresLogo.png";
+import AdminDashboard from './components/AdminDashboard';
 import EmployeeHistogram from './components/EmployeeHistogram';
 
 
@@ -64,9 +64,9 @@ function App() {
     {showLogin?<Login/>:<></>}
     {showRegistration?<EmployeeRegistration/>:<></>} */}
 
-    {/* <AdminDashboard/> */}
+    <AdminDashboard/>
     {/* <EmployeeDetails/> */}
-   <EmployeeHistogram/>
+   {/* <EmployeeHistogram/> */}
     
 
     </>
