@@ -5,7 +5,7 @@ const ArdruinoDataInterface = require('./ardruinoDataInterface');
 
 // Create a port
 const port = new SerialPort({
-  path: "/dev/tty.Bluetooth-Incoming-Port",
+  path: "COM4",
   baudRate: 9600,
 })
 // Open errors will be emitted as an error event
