@@ -76,6 +76,22 @@ exports.EmployeeRegistration = class EmployeeRegistration{
        }
     }
 
+    /**
+     * 
+     * @return {{firstName:string,lastName:string,email:string,employeeID:string}}  
+     */
+    static getEmployeeByEmail(email){
+        let result;
+        const employees = Object.values(EmployeeDatabase)
+        for(let i = 0; i < employees.length; i++){
+            if(employees[i]['email'] === email){
+                result= employees[i];
+                break;
+            }
+        }
+        return result
+    }
+
  
 
 

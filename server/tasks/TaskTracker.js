@@ -1,6 +1,8 @@
 const ArdruinoDataInterface = require('../ardruinoControllers/ardruinoDataInterface')
+const LocationTrackerDatabase = require('../database/LocationTrackerDatabase')
 const TaskTrackerDatabase = require('../database/TaskTrackerDatabase')
 const HashActionsController = require('../HashActions/HashActionsController')
+const { EmployeeRegistration } = require('../registration/employeeRegistration')
 
 module.exports = class TaskTracker{
     static createTask(data){
@@ -49,9 +51,24 @@ module.exports = class TaskTracker{
 
         return tasks.map((data,index)=>{
             const {email,title,description,managerEmail,task,createdAt,completed,project:{createdAt:projectDate,name,site}} = data
-          
             
-            return [index,email, title, timestampToHourFormat(createdAt), timestampToHourFormat(completed),site,name,task,description]
+            const employee = EmployeeRegistration.getEmployeeByEmail(email)
+
+
+            var badgeIn;
+            try{
+             badgeIn = timestampToHourFormat(LocationTrackerDatabase[email]['badgeIn'])
+            }catch(err){
+                badgeIn = timestampToHourFormat(null)
+            }
+
+            var badgeOut ;
+            try{
+             badgeOut = timestampToHourFormat(LocationTrackerDatabase[email]['badgeOut'])
+            }catch(err){
+                badgeOut = timestampToHourFormat(null)
+            }
+            return [employee['employeeID'], employee['firstName'],employee['lastName'],site,badgeIn,badgeOut,task, timestampToHourFormat(completed)]
         })
     }
 }

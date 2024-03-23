@@ -37,10 +37,10 @@ export class ReportGenerator{
 
     // badge in and badge out data and display in a line graph - what are the task and what are we billing at - if you save 20 minutes a day on task - it is accurate and not relying on report
     //Extract report from database
-    const data = []//await getEmployeeIDs()
+    const data = await getEmployeeIDs()
   
     const reportData = [
-      ['Employee ID', 'Name', 'Time In', 'Time Out','Work Site','Project','Task','Task Description'],
+      ['Employee ID', 'FirstName', 'LastName','Site','Badge In','Badge Out','Task','Completed'],
       data.length > 0 ? data: fake
       // Add more data as needed
     ];
@@ -52,7 +52,7 @@ export class ReportGenerator{
     doc.autoTable({
       startY: 20,
       head: [reportData[0]],
-      body: reportData.slice(1),
+      body: reportData.slice(1)[0],
     });
 
     // Save the PDF with the specified file name
