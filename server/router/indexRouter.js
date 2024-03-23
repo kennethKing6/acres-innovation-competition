@@ -57,6 +57,18 @@ router.post('/tasks-by-email',(req,res)=>{
     })
 
 })
+router.post('/tasks-histogram-by-email',(req,res)=>{
+    const {email} = req.body
+    console.log('histogram by email ',email)
+    const tasks = TaskTracker.generateHistogramByEmail(email);
+    console.log('histogram -----',tasks)
+    res.status(200);
+    res.json({
+        message:'success',
+        data:tasks
+    })
+
+})
 
 // -------------- Employee ----------------
 

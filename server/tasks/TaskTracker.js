@@ -71,6 +71,36 @@ module.exports = class TaskTracker{
             return [employee['employeeID'], employee['firstName'],employee['lastName'],site,badgeIn,badgeOut,task, timestampToHourFormat(completed)]
         })
     }
+
+    static generateHistogramByEmail(email){
+       const employee = EmployeeRegistration.getEmployeeByEmail(email)
+
+       const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+        const output = [
+            {employee: `${employee['firstName']} ${employee['lastName']}`, clockIn: { Monday: 0, Tuesday: 0, Wednesday: 0, Thursday: 0, Friday: 0,Saturday:0,Sunday:0 }}
+        ]
+
+       const tasks =  this.getTaskByEmail(email)
+       for(let i = 0; i < tasks.length; i++){
+        const date = new Date(tasks[i]['createdAt']);
+        const dayOfWeek = date.getDay();
+        const dayName = weekday[dayOfWeek];
+        output[0]['clockIn'][dayName] = output[0]['clockIn'][dayName] + diffHour(tasks[i]['createdAt'],tasks[i]['completed'])
+
+       }
+       return output
+    }
+}
+
+function diffHour(t1,t2){
+    if(!t1 || !t2)return 0
+
+    const date1 = new Date(t1);
+    const date2 = new Date(t2);
+    
+    const differenceInMilliseconds = Math.abs(date2 - date1);
+    const differenceInMinutes = Math.round(differenceInMilliseconds / (1000 * 60));
+    return differenceInHours
 }
 
 function timestampToHourFormat(timestamp){
