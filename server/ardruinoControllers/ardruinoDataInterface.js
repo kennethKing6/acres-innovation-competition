@@ -6,7 +6,7 @@ module.exports = class ArdruinoDataInterface{
 
 
     static writeToTag(){
-        return `00$${this.inputData}`
+        return `00${this.inputData}`
     }
     static readFromTag(input){
         input =  `${input}`.replaceAll('0','');

@@ -14,8 +14,9 @@ port.on('error', function(err) {
   })
 
 port.on("data", function(data) {
+  console.log("raw Data received: " + data);
   const decryptedData = ArdruinoDataInterface.readFromTag(data)
-    console.log("Data received: " + decryptedData);
+  console.log("decryptedData Data received: " + decryptedData);
     ArdruinoDataInterface.outputData = decryptedData;
     RFIDJobSiteTracker.inputToActions(decryptedData)
 });
