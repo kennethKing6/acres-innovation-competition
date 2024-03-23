@@ -3,7 +3,7 @@ import { BarChart } from '@mui/x-charts/BarChart';
 
 export default function EmployeeHistogram({employeeData = []}) {
  
-  if(employeeData){
+  if(Array.isArray(employeeData) && employeeData.length  > 0 ){
       // Process employee data to create series for BarChart
   const seriesData = [];
   const xAxisData = [{ data: [] }];
