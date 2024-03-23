@@ -23,8 +23,8 @@ exports.EmployeeRegistration = class EmployeeRegistration{
         password:newUser.password,
         creationDate:Date.now()
        } 
-       const hashedEmployee = HashActionsController.mapHashToEmployee(newUser.employeeID)
 
+       const hashedEmployee = HashActionsController.mapHashToEmployee(newUser.employeeID)
        //write to ardruino 
        ArdruinoDataInterface.inputData = hashedEmployee
 

@@ -15,7 +15,7 @@ exports.RFIDJobSiteTracker = class RFIDJobSiteTracker {
     // Used for the read ardruino
     static inputToActions(input){
         const employee = HashActionsController.getHashToEmployee(input)
-
+        console.log("Employee",employee)
         if(employee && !LocationTrackerDatabase[employee['email']]){
             // Badge Employee in
             LocationTrackerDatabase[employee['email']] = {

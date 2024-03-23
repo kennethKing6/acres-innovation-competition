@@ -28,16 +28,26 @@ module.exports = class HashActionsController{
      static getHashToEmployee(key){
         const data = HashActionsDatabase[key]
 
-        if(data["type"] === "Employee"){
-            return EmployeeDatabase[data["data"]]
+        console.log(`getHashToEmployee-key: ${key},database:${JSON.stringify(HashActionsDatabase)},data:${data}`)
+
+        try{
+            if(data["type"] === "Employee"){
+                return data
+            }
+        }catch(err){
+            return null
         }
      }
 
      static getHashToTask(key){
         const data = HashActionsDatabase[key]
 
+       try{
         if(data["type"] === "Task"){
             return TaskTrackerDatabase[data["data"]]
         }
+       }catch(err){
+        return null
+       }
      }
 }

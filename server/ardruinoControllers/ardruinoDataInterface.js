@@ -1,7 +1,7 @@
 
 module.exports = class ArdruinoDataInterface{
 
-    static inputData = "Hey you!"
+    static inputData = ""
     static outputData;
 
 
@@ -10,7 +10,8 @@ module.exports = class ArdruinoDataInterface{
     }
     static readFromTag(input){
         input =  `${input}`.replaceAll('0','');
-        return input
+        input =  `${input}`.replaceAll('F8:','');
+        return `${input}`
     }
     
 }
