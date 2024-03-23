@@ -23,6 +23,7 @@ exports.EmployeeRegistration = class EmployeeRegistration{
         creationDate:Date.now()
        } 
        ArdruinoDataInterface.inputData = newUser.employeeID
+       console.log("ArdruinoDataInterface",ArdruinoDataInterface.inputData)
     }
 
     static logInEmployee(employeeID,password){

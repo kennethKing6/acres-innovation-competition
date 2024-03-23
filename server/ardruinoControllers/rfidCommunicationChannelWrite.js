@@ -18,7 +18,9 @@ port.on("open", function() {
         
 });
 
-function writeToArdruino(){
+function writeToArdruino(data){
+  if(data !== "00$Hey you!")console.log('********TTTTT',data)
+
   return port.write(data,'binary', function(err) {
     if (err) {
      console.log('Error on write: ', err.message)
@@ -30,6 +32,5 @@ writeToArdruino(ArdruinoDataInterface.writeToTag())
 
 setInterval(()=>{
   const result = writeToArdruino(ArdruinoDataInterface.writeToTag())
-  console.log("result",result)
 },400)
   
