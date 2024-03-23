@@ -12,19 +12,19 @@ const EmployeeDatabase = {
         firstName: 'Connor',
         password: '123456789',
         employeeID: 'T00633693',
-        lastName: 'Connor',
+        lastName: 'Cross',
         creationDate: 1710001531605
       },
       T00633695: {
-        email: 'connor@acres.com',
+        email: 'shubham@acres.com',
         firstName: 'Shubham',
         password: '123456789',
         employeeID: 'T00633695',
-        lastName: 'Shubham',
+        lastName: 'Jangra',
         creationDate: 1710001531605
       },
       T00633698: {
-        email: 'connor@acres.com',
+        email: 'paul@acres.com',
         firstName: 'Paul',
         password: '123456789',
         employeeID: 'T00633698',

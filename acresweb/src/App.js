@@ -1,11 +1,10 @@
 import './App.css';
-import myImage from './assets/ACR-logo-web-2022.png'
-import EmployeeRegistration from './components/EmployeeRegisteration';
-import TaskManagement from './components/TaskManagement';
-import Login from './components/Login';
 import { useState } from 'react';
-import AdminDashboard from './components/AdminDashboard';
-import EmployeeDetails from './components/EmployeeDetails';
+//import {logo} from "./assets/acresLogo.png";
+//import AdminDashboard from './components/AdminDashboard';
+import EmployeeHistogram from './components/EmployeeHistogram';
+
+
 
 
 function App() {
@@ -65,7 +64,10 @@ function App() {
     {showLogin?<Login/>:<></>}
     {showRegistration?<EmployeeRegistration/>:<></>} */}
 
-    <AdminDashboard/>
+    {/* <AdminDashboard/> */}
+    {/* <EmployeeDetails/> */}
+   <EmployeeHistogram/>
+    
 
     </>
   )
