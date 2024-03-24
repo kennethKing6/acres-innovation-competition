@@ -98,9 +98,9 @@ function diffHour(t1,t2){
     const date1 = new Date(t1);
     const date2 = new Date(t2);
     
-    const differenceInMilliseconds = Math.abs(date2 - date1);
+    const differenceInMilliseconds = Math.abs(date2.getTime() - date1.getTime());
     const differenceInMinutes = Math.round(differenceInMilliseconds / (1000 * 60));
-    return differenceInHours
+    return differenceInMinutes
 }
 
 function timestampToHourFormat(timestamp){

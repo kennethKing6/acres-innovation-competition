@@ -15,7 +15,7 @@ exports.RFIDJobSiteTracker = class RFIDJobSiteTracker {
     // Used for the read ardruino
     static inputToActions(input){
         const employee = HashActionsController.getHashToEmployee(input)
-        console.log("Employee",employee)
+        console.log("inputToActions: Employee",employee)
         if(employee && !LocationTrackerDatabase[employee['email']]){
             // Badge Employee in
             LocationTrackerDatabase[employee['email']] = {
@@ -30,10 +30,13 @@ exports.RFIDJobSiteTracker = class RFIDJobSiteTracker {
 
         if(task){
             // mark a task completed
-            if(!TaskTrackerDatabase[task['taskID']]['completed'])
+            if(!TaskTrackerDatabase[task['taskID']]['completed']){
                 TaskTrackerDatabase[task['taskID']]['completed'] = Date.now()
+            }
             else{
-                LocationTrackerDatabase[task['email']]['badgeOut']  = Date.now()
+                console.log('YYYYY task ',task)
+
+                TaskTrackerDatabase[task['taskID']]['badgeOut']  = Date.now()
             }
         }
     }

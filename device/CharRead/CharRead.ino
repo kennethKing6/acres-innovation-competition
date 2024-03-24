@@ -117,12 +117,12 @@ void dump_byte_array(byte *buffer, byte bufferSize) {
 }
 
 void dumpToString(byte *buffer, byte addr){
-    Serial.println(F("Data at block"));
-    Serial.print(addr);
-    Serial.print(F(" converted as UTF8:"));
+//    Serial.println(F("Data at block"));
+//    Serial.print(addr);
+//    Serial.print(F(" converted as UTF8:"));
     for(int i = 0; i<16; i++){
       Serial.print(buffer[i] < 0x10?" 0":" ");
       Serial.print((char) buffer[i]);
     }
-    Serial.println();
+    Serial.println("$");
 }

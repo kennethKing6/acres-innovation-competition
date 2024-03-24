@@ -27,12 +27,9 @@ module.exports = class HashActionsController{
 
      static getHashToEmployee(key){
         const data = HashActionsDatabase[key]
-
-        console.log(`getHashToEmployee-key: ${key},database:${JSON.stringify(HashActionsDatabase)},data:${data}`)
-
         try{
             if(data["type"] === "Employee"){
-                return data
+                return EmployeeDatabase[data['data']]
             }
         }catch(err){
             return null

@@ -4,7 +4,7 @@ const ArdruinoDataInterface = require('./ardruinoDataInterface');
 
 // Create a port
 const port = new SerialPort({
-  path: "COM3",
+  path: "/dev/tty.usbmodemFD131",
   baudRate: 9600,
 })
 // Open errors will be emitted as an error event
@@ -25,7 +25,7 @@ function writeToArdruino(data){
      console.log('Error on write: ', err.message)
     }
     // console.log('message written')
-    if(data !== "00$Hey you!")console.log('********TTTTT',data)
+    if(data !== "00")console.log('********TTTTT',data)
 
   })
 }
