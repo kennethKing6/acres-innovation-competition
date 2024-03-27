@@ -26,7 +26,17 @@ router.post('/add-task',(req,res)=>{
 
 router.get('/tasks',(req,res)=>{
     const tasks = TaskTracker.listTasks();
+    console.log('********** tasks',tasks)
+    res.status(200);
+    res.json({
+        message:'success',
+        data:tasks
+    })
 
+})
+router.get('/generate-tasks-report',(req,res)=>{
+    const tasks = TaskTracker.generateReport();
+    console.log('********** tasks',tasks)
     res.status(200);
     res.json({
         message:'success',
@@ -40,6 +50,18 @@ router.post('/tasks-by-email',(req,res)=>{
     console.log('tasks by email ',email)
     const tasks = TaskTracker.getTaskByEmail(email);
     console.log('tasks -----',tasks)
+    res.status(200);
+    res.json({
+        message:'success',
+        data:tasks
+    })
+
+})
+router.post('/tasks-histogram-by-email',(req,res)=>{
+    const {email} = req.body
+    console.log('histogram by email ',email)
+    const tasks = TaskTracker.generateHistogramByEmail(email);
+    console.log('histogram -----',tasks)
     res.status(200);
     res.json({
         message:'success',
@@ -75,7 +97,7 @@ router.get('/list-Employees',(req,res)=>{
 // -------------- Sites ----------------
 router.post('/add-site',(req,res)=>{
     SitesTracker.createSite(req.body)
-    // console.log('SItes database',WorkSitesDatabase)
+    console.log('SItes database',WorkSitesDatabase)
     res.status(200);
     res.send({
         message:'success'

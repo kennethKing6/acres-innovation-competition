@@ -2,8 +2,8 @@ const express = require('express')
 const { indexRouter } = require('./router/indexRouter')
 const cors = require('cors');
 const bodyParser = require('body-parser');
-
-
+require("./ardruinoControllers/rfidCommunicationChannelWrite")
+require("./ardruinoControllers/rfidCommunicationChannel")
 const app = express()
 // Enable CORS for all routes
 app.use(cors({origin:"*"}));
@@ -13,6 +13,6 @@ app.use(bodyParser.json());
 app.use('/',indexRouter)
 
 
-app.listen(1000,()=>{
+app.listen(2000,()=>{
     console.log('listening')
 })

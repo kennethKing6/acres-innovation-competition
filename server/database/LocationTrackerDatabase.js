@@ -1,3 +1,4 @@
-const LocationTrackerDatabase = {}
+const LocationTrackerDatabase = {
+}
 
 module.exports = LocationTrackerDatabase

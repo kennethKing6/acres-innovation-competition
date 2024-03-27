@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest . --coverage",
     "start": "node index.js",
-    "list:ardruino-ports":"npx @serialport/list"
+    "list:ardruino-ports": "npx @serialport/list"
   },
   "author": "",
   "license": "ISC",

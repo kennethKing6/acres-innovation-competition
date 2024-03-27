@@ -1,4 +1,6 @@
+const ArdruinoDataInterface = require("../ardruinoControllers/ardruinoDataInterface")
 const EmployeeDatabase = require("../database/EmployeeDatabase")
+const HashActionsController = require("../HashActions/HashActionsController")
 
 exports.EmployeeRegistration = class EmployeeRegistration{
 
@@ -21,6 +23,11 @@ exports.EmployeeRegistration = class EmployeeRegistration{
         password:newUser.password,
         creationDate:Date.now()
        } 
+
+       const hashedEmployee = HashActionsController.mapHashToEmployee(newUser.employeeID)
+       //write to ardruino 
+       ArdruinoDataInterface.inputData = hashedEmployee
+
     }
 
     static logInEmployee(employeeID,password){
@@ -31,6 +38,7 @@ exports.EmployeeRegistration = class EmployeeRegistration{
        
        const {password:employeePassword} = employee;
        if(employeePassword === password){
+        ArdruinoDataInterface.inputData = employeeID
         return employee
        }else{
         throw new Error("Unauthorized Access");
@@ -66,6 +74,22 @@ exports.EmployeeRegistration = class EmployeeRegistration{
        if(!employee){
         throw new Error("This Employee ID does not exist")
        }
+    }
+
+    /**
+     * 
+     * @return {{firstName:string,lastName:string,email:string,employeeID:string}}  
+     */
+    static getEmployeeByEmail(email){
+        let result;
+        const employees = Object.values(EmployeeDatabase)
+        for(let i = 0; i < employees.length; i++){
+            if(employees[i]['email'] === email){
+                result= employees[i];
+                break;
+            }
+        }
+        return result
     }
 
  

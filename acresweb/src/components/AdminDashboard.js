@@ -6,7 +6,7 @@ import AdminSites from './AdminSites';
 import AdminEmployee from './AdminEmployee';
 import AdminTasks from './AdminTasks';
 import { AcresColors } from '../assets/colors';
-import adminImage from '/Users/shubham/Documents/acres-innovation-competition/acresweb/src/assets/acresLogo.png'; // Import the image
+import adminImage from './acresLogo.png'; // Import the image
 
 const PROJECTS_CATEGORY = 'Projects';
 const EMPLOYEE_CATEGORY = 'Employees';
@@ -36,7 +36,7 @@ export default function AdminDashboard() {
         {/* Display the image */}
         <img src={adminImage} alt="Admin" style={{ width: '130%', borderRadius: 10, boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.2)' }}/>
       <Grid item xs={12}>
-        /</Grid>
+        </Grid>
       </Grid>
       {category.map(({ color, name, bgColor, onPress }) => (
         <Grid item key={name}>
