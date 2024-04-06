@@ -38,10 +38,11 @@ export class ReportGenerator{
     // badge in and badge out data and display in a line graph - what are the task and what are we billing at - if you save 20 minutes a day on task - it is accurate and not relying on report
     //Extract report from database
     const data = await getEmployeeIDs()
+    fake.push(...data)
   
     const reportData = [
       ['Employee ID', 'FirstName', 'LastName','Site','Badge In','Badge Out','Task','Completed'],
-      data.length > 0 ? data: fake
+       fake
       // Add more data as needed
     ];
 

@@ -22,6 +22,7 @@ exports.RFIDJobSiteTracker = class RFIDJobSiteTracker {
                 badgeIn: Date.now(),
                 badgeOut:null
             }
+            
         }else if(employee && LocationTrackerDatabase[employee['email']]){
             LocationTrackerDatabase[employee['email']]['badgeOut']  = Date.now()
         }
@@ -39,5 +40,8 @@ exports.RFIDJobSiteTracker = class RFIDJobSiteTracker {
                 TaskTrackerDatabase[task['taskID']]['badgeOut']  = Date.now()
             }
         }
+        if(employee)
+        console.log("Clock in/out tracker",LocationTrackerDatabase[employee['email']])
+
     }
 }

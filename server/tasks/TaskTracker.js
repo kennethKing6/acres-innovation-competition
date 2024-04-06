@@ -99,7 +99,7 @@ function diffHour(t1,t2){
     const date2 = new Date(t2);
     
     const differenceInMilliseconds = Math.abs(date2.getTime() - date1.getTime());
-    const differenceInMinutes = Math.round(differenceInMilliseconds / (1000 * 60));
+    const differenceInMinutes = Math.round(differenceInMilliseconds / (1000));
     return differenceInMinutes
 }
 

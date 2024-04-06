@@ -1,5 +1,6 @@
 const { SerialPort } = require('serialport');
 const ArdruinoDataInterface = require('./ardruinoDataInterface');
+const EmployeeDatabase = require('../database/EmployeeDatabase');
 
 
 // Create a port
@@ -25,7 +26,7 @@ function writeToArdruino(data){
      console.log('Error on write: ', err.message)
     }
     // console.log('message written')
-    if(data !== "00")console.log('********TTTTT',data)
+    if(data !== "00")console.log('********TTTTT',JSON.stringify(data))
 
   })
 }
